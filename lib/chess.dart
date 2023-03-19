@@ -891,6 +891,64 @@ class Chess {
     return false;
   }
 
+  bool get insufficient_material_white {
+    final pieces = {};
+    for (var i = SQUARES_A8; i <= SQUARES_H1; i++) {
+      if ((i & 0x88) != 0) {
+        i += 7;
+        continue;
+      }
+
+      var piece = board[i];
+      if (piece != null && piece.color == WHITE) {
+        pieces[piece.type] =
+        (pieces.containsKey(piece.type)) ? pieces[piece.type] + 1 : 1;
+      }
+    }
+
+    /* k vs. k */
+    if (pieces.length == 1 && pieces.containsKey(KING)) {
+      return true;
+    } /* k vs. kb */
+    else if (pieces.length == 2 && pieces.containsKey(KING) && pieces.containsKey(BISHOP)) {
+      return true;
+    } /* k vs. kn */
+    else if (pieces.length == 2 && pieces.containsKey(KING) && pieces.containsKey(KNIGHT)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool get insufficient_material_black {
+    final pieces = {};
+    for (var i = SQUARES_A8; i <= SQUARES_H1; i++) {
+      if ((i & 0x88) != 0) {
+        i += 7;
+        continue;
+      }
+
+      var piece = board[i];
+      if (piece != null && piece.color == BLACK) {
+        pieces[piece.type] =
+        (pieces.containsKey(piece.type)) ? pieces[piece.type] + 1 : 1;
+      }
+    }
+
+    /* k vs. k */
+    if (pieces.length == 1 && pieces.containsKey(KING)) {
+      return true;
+    } /* k vs. kb */
+    else if (pieces.length == 2 && pieces.containsKey(KING) && pieces.containsKey(BISHOP)) {
+      return true;
+    } /* k vs. kn */
+    else if (pieces.length == 2 && pieces.containsKey(KING) && pieces.containsKey(KNIGHT)) {
+      return true;
+    }
+
+    return false;
+  }
+
   bool get in_threefold_repetition {
     /* TODO: while this function is fine for casual use, a better
      * implementation would use a Zobrist key (instead of FEN). the
